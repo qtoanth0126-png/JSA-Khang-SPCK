@@ -11,7 +11,7 @@ async function loadFeaturedRecipes() {
   try {
     const recipes = [];
     for (let i = 0; i < 6; i++) {
-      const response = await fetch(`${API_URL}/random.php`);
+      const response = await fetch(`${API_URL}/random.php`); //fetch lay data tu API
       const data = await response.json();
       if (data.meals) {
         recipes.push(data.meals[0]);
@@ -50,7 +50,18 @@ async function loadCategories() {
     const data = await response.json();
 
     if (data.categories) {
-      // Code here
+      let categories = data.categories;
+      container.innerHTML = categories
+        .slice(0, 10)
+        .map(
+          (category) => `
+                <div class="category-card" onclick="window.location.href='recipes.html?category=${category.strCategory}'">
+                    <img src="${category.strCategoryThumb}" alt="${category.strCategory}" style="width: 80px; height: 80px; border-radius: 50%;">
+                    <h3>${category.strCategory}</h3>
+                </div>
+            `,
+        )
+        .join("");
     }
   } catch (error) {
     console.error("Error loading categories:", error);
